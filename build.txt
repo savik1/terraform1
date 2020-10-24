@@ -1,0 +1,19 @@
+#cloud-config
+apt_update: true
+package_update: true
+packages:
+ - default-jdk
+ - maven
+ - git
+ - awscli
+
+runcmd:
+ - aws --profile default configure set aws_access_key_id "<ENTER KEY>"
+ - aws --profile default configure set aws_secret_access_key "<ENTER KEY>"
+ - aws --profile default configure set AWS_DEFAULT_REGION "ru-central1-a"
+ - mkdir /home/build
+ - cd /home/build
+ - git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+ - cd /home/build/boxfuse-sample-java-war-hello
+ - mvn package
+ - aws --endpoint-url=https://storage.yandexcloud.net s3 cp ./target/hello-1.0.war s3://war-file/

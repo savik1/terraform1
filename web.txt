@@ -1,0 +1,13 @@
+#cloud-config
+apt_update: true
+package_update: true
+packages:
+ - default-jdk
+ - tomcat8
+ - awscli
+
+runcmd:
+ - aws --profile default configure set aws_access_key_id "<ENTER KEY>"
+ - aws --profile default configure set aws_secret_access_key "<ENTER KEY>"
+ - aws --profile default configure set AWS_DEFAULT_REGION "ru-central1-a"
+ - aws --endpoint-url=https://storage.yandexcloud.net s3 cp s3://war-file/hello-1.0.war /var/lib/tomcat8/webapps/
